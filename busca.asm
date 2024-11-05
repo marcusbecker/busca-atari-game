@@ -62,8 +62,34 @@ StartFrame:
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Draw 192 visible scanlines
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-	REPEAT 192
+    ldx #%11111111           ; Playerfield pattern
+	lda #$F8
+    sta COLUPF               ; Set cave top color
+
+	stx PF0
+	stx PF1
+	stx PF2
+
+	REPEAT 30
+        sta WSYNC            ; Cave top size
+    REPEND
+
+    lda #0                   ; 
+    sta COLUPF               ; Disable playerfield
+
+	REPEAT 132
         sta WSYNC            ;
+    REPEND
+
+    lda #$F2
+    sta COLUPF               ; Set cave bottom color
+	
+	stx PF0
+	stx PF1
+	stx PF2
+
+	REPEAT 30
+        sta WSYNC            ; Cave bototm size
     REPEND
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
