@@ -62,20 +62,88 @@ StartFrame:
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Draw 192 visible scanlines
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-    ldx #%11111111           ; Playerfield pattern
 	lda #$F8
     sta COLUPF               ; Set cave top color
 
+	ldx #%11110000           ; Playerfield pattern
 	stx PF0
+	
+	ldx #%11111111           ; Playerfield pattern
 	stx PF1
+	
+	ldx #%11111111           ; Playerfield pattern
 	stx PF2
 
-	REPEAT 30
-        sta WSYNC            ; Cave top size
-    REPEND
+	sta WSYNC                ; Line 1
+	sta WSYNC                ; Line 2
+	sta WSYNC                ; Line 3
+	sta WSYNC                ; Line 4
+	sta WSYNC                ; Line 5
+	sta WSYNC                ; Line 6		
+	
+	ldx #%11100000           ; Playerfield pattern
+	stx PF0
+	
+	ldx #%11011111           ; Playerfield pattern
+	stx PF1
+	
+	ldx #%01111100           ; Playerfield pattern
+	stx PF2
+
+	sta WSYNC                ; Line 7
+	sta WSYNC                ; Line 8
+	sta WSYNC                ; Line 9
+	sta WSYNC                ; Line 10
+	sta WSYNC                ; Line 11
+	sta WSYNC                ; Line 12
+
+	ldx #%11000000           ; Playerfield pattern
+	stx PF0
+	
+	ldx #%10001110           ; Playerfield pattern
+	stx PF1
+	
+	ldx #%00111000           ; Playerfield pattern
+	stx PF2
+
+	sta WSYNC                ; Line 13
+	sta WSYNC                ; Line 14
+	sta WSYNC                ; Line 15
+	sta WSYNC                ; Line 16
+	sta WSYNC                ; Line 17
+	sta WSYNC                ; Line 18
+
+	ldx #%10000000           ; Playerfield pattern
+	stx PF0
+	
+	ldx #%00000100           ; Playerfield pattern
+	stx PF1
+	
+	ldx #%00010000           ; Playerfield pattern
+	stx PF2
+
+	sta WSYNC                ; Line 19
+	sta WSYNC                ; Line 20
+	sta WSYNC                ; Line 21
+	sta WSYNC                ; Line 22
+	sta WSYNC                ; Line 23
+	sta WSYNC                ; Line 24	
 
     lda #0                   ; 
     sta COLUPF               ; Disable playerfield
+
+	REPEAT 6
+        sta WSYNC            ; Cave top size
+    REPEND
+
+
+
+
+
+
+
+
+
 
 	REPEAT 132
         sta WSYNC            ;
@@ -84,6 +152,7 @@ StartFrame:
     lda #$F2
     sta COLUPF               ; Set cave bottom color
 	
+	ldx #%11111111           ; Playerfield pattern
 	stx PF0
 	stx PF1
 	stx PF2
