@@ -74,12 +74,9 @@ StartFrame:
 	ldx #%11111111           ; Playerfield pattern
 	stx PF2
 
-	sta WSYNC                ; Line 1
-	sta WSYNC                ; Line 2
-	sta WSYNC                ; Line 3
-	sta WSYNC                ; Line 4
-	sta WSYNC                ; Line 5
-	sta WSYNC                ; Line 6		
+	REPEAT 6
+        sta WSYNC            ; Line 1 - 6
+    REPEND		
 	
 	ldx #%11100000           ; Playerfield pattern
 	stx PF0
@@ -90,12 +87,9 @@ StartFrame:
 	ldx #%01111100           ; Playerfield pattern
 	stx PF2
 
-	sta WSYNC                ; Line 7
-	sta WSYNC                ; Line 8
-	sta WSYNC                ; Line 9
-	sta WSYNC                ; Line 10
-	sta WSYNC                ; Line 11
-	sta WSYNC                ; Line 12
+	REPEAT 6
+        sta WSYNC            ; Line 7 - 12
+    REPEND	
 
 	ldx #%11000000           ; Playerfield pattern
 	stx PF0
@@ -106,12 +100,9 @@ StartFrame:
 	ldx #%00111000           ; Playerfield pattern
 	stx PF2
 
-	sta WSYNC                ; Line 13
-	sta WSYNC                ; Line 14
-	sta WSYNC                ; Line 15
-	sta WSYNC                ; Line 16
-	sta WSYNC                ; Line 17
-	sta WSYNC                ; Line 18
+	REPEAT 6
+        sta WSYNC            ; Line 13 - 18
+    REPEND	
 
 	ldx #%10000000           ; Playerfield pattern
 	stx PF0
@@ -122,12 +113,9 @@ StartFrame:
 	ldx #%00010000           ; Playerfield pattern
 	stx PF2
 
-	sta WSYNC                ; Line 19
-	sta WSYNC                ; Line 20
-	sta WSYNC                ; Line 21
-	sta WSYNC                ; Line 22
-	sta WSYNC                ; Line 23
-	sta WSYNC                ; Line 24	
+	REPEAT 6
+        sta WSYNC            ; Line 19 - 24
+    REPEND	
 
     lda #0                   ; 
     sta COLUPF               ; Disable playerfield
@@ -135,15 +123,6 @@ StartFrame:
 	REPEAT 6
         sta WSYNC            ; Cave top size
     REPEND
-
-
-
-
-
-
-
-
-
 
 	REPEAT 132
         sta WSYNC            ;
