@@ -102,7 +102,7 @@ StartFrame:
 
 	REPEAT 6
         sta WSYNC            ; Line 13 - 18
-    REPEND	
+    REPEND
 
 	ldx #%10000000           ; Playerfield pattern
 	stx PF0
@@ -124,20 +124,78 @@ StartFrame:
         sta WSYNC            ; Cave top size
     REPEND
 
+	;
+	; Game init
+	;
+
 	REPEAT 132
         sta WSYNC            ;
     REPEND
 
+	;
+	; Game end
+	;
+
     lda #$F2
     sta COLUPF               ; Set cave bottom color
 	
-	ldx #%11111111           ; Playerfield pattern
+	ldx #%10000000           ; Playerfield pattern
 	stx PF0
+	
+	ldx #%00000100           ; Playerfield pattern
 	stx PF1
+	
+	ldx #%00010000           ; Playerfield pattern
 	stx PF2
 
-	REPEAT 30
-        sta WSYNC            ; Cave bototm size
+	REPEAT 6
+        sta WSYNC            ; Line 1 - 6
+    REPEND		
+	
+	ldx #%11000000           ; Playerfield pattern
+	stx PF0
+	
+	ldx #%10001110           ; Playerfield pattern
+	stx PF1
+	
+	ldx #%00111000           ; Playerfield pattern
+	stx PF2
+
+	REPEAT 6
+        sta WSYNC            ; Line 7 - 12
+    REPEND	
+
+	ldx #%11100000           ; Playerfield pattern
+	stx PF0
+	
+	ldx #%11011111           ; Playerfield pattern
+	stx PF1
+	
+	ldx #%01111100           ; Playerfield pattern
+	stx PF2
+
+	REPEAT 6
+        sta WSYNC            ; Line 13 - 18
+    REPEND
+
+	ldx #%11110000           ; Playerfield pattern
+	stx PF0
+	
+	ldx #%11111111           ; Playerfield pattern
+	stx PF1
+	
+	ldx #%11111111           ; Playerfield pattern
+	stx PF2	
+
+	REPEAT 6
+        sta WSYNC            ; Line 19 - 24
+    REPEND	
+
+    lda #0                   ; 
+    sta COLUPF               ; Disable playerfield
+
+	REPEAT 6
+        sta WSYNC            ; Cave top size
     REPEND
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
