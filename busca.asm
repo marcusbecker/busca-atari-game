@@ -68,22 +68,24 @@ StartFrame:
 ;; Playerfield pattern
 	ldy #2
 LoopCave:
-	dey
-	bne LoopCave
-
-	ldx CaveSprite
-	stx PF0
-	
-	ldx CaveSprite+1
-	stx PF1
-	
-	ldx CaveSprite+2
+	ldx CaveSprite,Y ;+2
 	stx PF2
+	dey
+
+	ldx CaveSprite,Y ;+1
+	stx PF1
+	dey
+
+	ldx CaveSprite,Y ;+0
+	stx PF0
+	dey
 
 	REPEAT 6
         sta WSYNC            ; Line 1 - 6
-    REPEND		
-	
+    REPEND	
+
+	beq LoopCave
+
 	ldx #%11100000           ; Playerfield pattern
 	stx PF0
 	
