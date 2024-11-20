@@ -66,64 +66,26 @@ StartFrame:
     sta COLUPF               ; Set cave top color
 
 ;; Playerfield pattern
-	ldy #2
+	ldy #0
 LoopCave:
-	ldx CaveSprite,Y ;+2
-	stx PF2
-	dey
-
-	ldx CaveSprite,Y ;+1
-	stx PF1
-	dey
-
 	ldx CaveSprite,Y ;+0
 	stx PF0
-	dey
+	iny
+	
+	ldx CaveSprite,Y ;+1
+	stx PF1
+	iny
 
+	ldx CaveSprite,Y ;+2
+	stx PF2
+	iny
+	
 	REPEAT 6
         sta WSYNC            ; Line 1 - 6
     REPEND	
 
-	beq LoopCave
-
-	ldx #%11100000           ; Playerfield pattern
-	stx PF0
-	
-	ldx #%11011111           ; Playerfield pattern
-	stx PF1
-	
-	ldx #%01111100           ; Playerfield pattern
-	stx PF2
-
-	REPEAT 6
-        sta WSYNC            ; Line 7 - 12
-    REPEND	
-
-	ldx #%11000000           ; Playerfield pattern
-	stx PF0
-	
-	ldx #%10001110           ; Playerfield pattern
-	stx PF1
-	
-	ldx #%00111000           ; Playerfield pattern
-	stx PF2
-
-	REPEAT 6
-        sta WSYNC            ; Line 13 - 18
-    REPEND
-
-	ldx #%10000000           ; Playerfield pattern
-	stx PF0
-	
-	ldx #%00000100           ; Playerfield pattern
-	stx PF1
-	
-	ldx #%00010000           ; Playerfield pattern
-	stx PF2
-
-	REPEAT 6
-        sta WSYNC            ; Line 19 - 24
-    REPEND	
+	cpy #12
+	bne LoopCave
 
     lda #0                   ; 
     sta COLUPF               ; Disable playerfield
