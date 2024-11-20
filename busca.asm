@@ -65,27 +65,29 @@ StartFrame:
 	lda #$F8
     sta COLUPF               ; Set cave top color
 
+;;
 ;; Playerfield pattern
+;;
 	ldy #0
 LoopCave:
-	ldx CaveSprite,Y ;+0
-	stx PF0
-	iny
+	ldx CaveSprite,Y         ; Load Y line
+	stx PF0                  ; Store col 1
+	iny                      ; Increment Y
 	
-	ldx CaveSprite,Y ;+1
-	stx PF1
-	iny
+	ldx CaveSprite,Y         ; Load Y line
+	stx PF0                  ; Store col 2
+	iny                      ; Increment Y
 
-	ldx CaveSprite,Y ;+2
-	stx PF2
-	iny
+	ldx CaveSprite,Y         ; Load Y line
+	stx PF0                  ; Store col 3
+	iny                      ; Increment Y	
 	
 	REPEAT 6
-        sta WSYNC            ; Line 1 - 6
+        sta WSYNC            ; Repeate for N lines
     REPEND	
 
-	cpy #12
-	bne LoopCave
+	cpy #12                  ; Compare with max lines
+	bne LoopCave             ; End loop
 
     lda #0                   ; 
     sta COLUPF               ; Disable playerfield
@@ -94,17 +96,17 @@ LoopCave:
         sta WSYNC            ; Cave top size
     REPEND
 
-	;
-	; Game init
-	;
+;;
+;; Game init
+;;
 
 	REPEAT 132
         sta WSYNC            ;
     REPEND
 
-	;
-	; Game end
-	;
+;;
+;; Game end
+;;
 
     lda #$F2
     sta COLUPF               ; Set cave bottom color
