@@ -75,11 +75,11 @@ LoopCave:
 	iny                      ; Increment Y
 	
 	ldx CaveSprite,Y         ; Load Y line
-	stx PF0                  ; Store col 2
+	stx PF1                  ; Store col 2
 	iny                      ; Increment Y
 
 	ldx CaveSprite,Y         ; Load Y line
-	stx PF0                  ; Store col 3
+	stx PF2                  ; Store col 3
 	iny                      ; Increment Y	
 	
 	REPEAT 6
