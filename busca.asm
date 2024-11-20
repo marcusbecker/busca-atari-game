@@ -66,6 +66,11 @@ StartFrame:
     sta COLUPF               ; Set cave top color
 
 ;; Playerfield pattern
+	ldy #2
+LoopCave:
+	dey
+	bne LoopCave
+
 	ldx CaveSprite
 	stx PF0
 	
