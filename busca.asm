@@ -65,13 +65,14 @@ StartFrame:
 	lda #$F8
     sta COLUPF               ; Set cave top color
 
-	ldx #%11110000           ; Playerfield pattern
+;; Playerfield pattern
+	ldx CaveSprite
 	stx PF0
 	
-	ldx #%11111111           ; Playerfield pattern
+	ldx CaveSprite+1
 	stx PF1
 	
-	ldx #%11111111           ; Playerfield pattern
+	ldx CaveSprite+2
 	stx PF2
 
 	REPEAT 6
@@ -214,6 +215,24 @@ StartFrame:
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
     jmp StartFrame
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Declare ROM lookup tables
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;; Playerfield pattern
+CaveSprite:
+	.byte #%11110000           ; Line-Col 1-1
+	.byte #%11111111           ; Line-Col 1-2
+	.byte #%11111111           ; Line-Col 1-3
+	.byte #%11100000           ; Line-Col 2-1
+	.byte #%11011111           ; Line-Col 2-2
+	.byte #%01111100           ; Line-Col 2-3
+	.byte #%11000000           ; Line-Col 3-1
+	.byte #%10001110           ; Line-Col 3-2
+	.byte #%00111000           ; Line-Col 3-3
+	.byte #%10000000           ; Line-Col 4-1
+	.byte #%00000100           ; Line-Col 4-2
+	.byte #%00010000           ; Line-Col 4-3
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Complete the 4KB ROM size
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
