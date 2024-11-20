@@ -69,7 +69,7 @@ StartFrame:
 ;; Playerfield pattern
 ;;
 	ldy #0
-LoopCave:
+LoopCaveTop:
 	ldx CaveSprite,Y         ; Load Y line
 	stx PF0                  ; Store col 1
 	iny                      ; Increment Y
@@ -83,11 +83,11 @@ LoopCave:
 	iny                      ; Increment Y	
 	
 	REPEAT 6
-        sta WSYNC            ; Repeate for N lines
+        sta WSYNC            ; Repeate for N vertical lines
     REPEND	
 
 	cpy #12                  ; Compare with max lines
-	bne LoopCave             ; End loop
+	bne LoopCaveTop          ; End loop
 
     lda #0                   ; 
     sta COLUPF               ; Disable playerfield
@@ -107,68 +107,32 @@ LoopCave:
 ;;
 ;; Game end
 ;;
-
     lda #$F2
     sta COLUPF               ; Set cave bottom color
-	
-	ldx #%10000000           ; Playerfield pattern
-	stx PF0
-	
-	ldx #%00000100           ; Playerfield pattern
-	stx PF1
-	
-	ldx #%00010000           ; Playerfield pattern
-	stx PF2
 
+	ldy #12                  ; Load max lines plus one
+LoopCaveBottom:
+	dey                      ; Decrement Y
+	ldx CaveSprite,Y         ; Load Y line
+	stx PF2                  ; Store col 3
+		
+	dey                      ; Decrement Y
+	ldx CaveSprite,Y         ; Load Y line
+	stx PF1                  ; Store col 2
+	
+	dey                      ; Decrement Y
+	ldx CaveSprite,Y         ; Load Y line
+	stx PF0                  ; Store col 1
+	
 	REPEAT 6
-        sta WSYNC            ; Line 1 - 6
-    REPEND		
-	
-	ldx #%11000000           ; Playerfield pattern
-	stx PF0
-	
-	ldx #%10001110           ; Playerfield pattern
-	stx PF1
-	
-	ldx #%00111000           ; Playerfield pattern
-	stx PF2
-
-	REPEAT 6
-        sta WSYNC            ; Line 7 - 12
+        sta WSYNC            ; Repeate for N vertical lines
     REPEND	
 
-	ldx #%11100000           ; Playerfield pattern
-	stx PF0
-	
-	ldx #%11011111           ; Playerfield pattern
-	stx PF1
-	
-	ldx #%01111100           ; Playerfield pattern
-	stx PF2
+	cpy #0                   ; Compare with 0
+	bne LoopCaveBottom       ; End loop
 
-	REPEAT 6
-        sta WSYNC            ; Line 13 - 18
-    REPEND
-
-	ldx #%11110000           ; Playerfield pattern
-	stx PF0
-	
-	ldx #%11111111           ; Playerfield pattern
-	stx PF1
-	
-	ldx #%11111111           ; Playerfield pattern
-	stx PF2	
-
-	REPEAT 6
-        sta WSYNC            ; Line 19 - 24
-    REPEND	
-
-    lda #0                   ; 
+	lda #0                   ; 
     sta COLUPF               ; Disable playerfield
-
-	REPEAT 6
-        sta WSYNC            ; Cave top size
-    REPEND
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Display VBLANK Overscan
