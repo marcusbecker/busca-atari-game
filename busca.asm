@@ -23,7 +23,7 @@ P0ypos .byte 	        ; Player 0 Y position 1 byte
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Define constants
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-PLAYER_HEIGHT = 10     ; Default size for player
+PLAYER_HEIGHT = 10      ; Default size for player
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Cartridge ROM from $F000 to $FFFF
@@ -33,6 +33,12 @@ PLAYER_HEIGHT = 10     ; Default size for player
 
 Start:
 	CLEAN_START      ; Macro to clean RAM and TIA
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Initialize variables
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+lda #10              ; Player 0 Y initial value
+sta P0ypos           ; Set player 0 Y initial value
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Start game logic
@@ -69,7 +75,7 @@ StartFrame:
     sta COLUPF               ; Set cave top color
 
 ;;
-;; Playerfield pattern
+;; Playerfield pattern TOP - 24 lines
 ;;
 	ldy #0
 LoopCaveTop:
@@ -95,17 +101,15 @@ LoopCaveTop:
     lda #0                   ; 
     sta COLUPF               ; Disable playerfield
 
-	REPEAT 6
-        sta WSYNC            ; Cave top size
-    REPEND
-
 ;;
-;; Game init
+;; Game  - 144 lines
 ;;
 
-	REPEAT 66
-        sta WSYNC            ;
-    REPEND
+	ldx #134
+LoopGameLine:
+	sta WSYNC            ;
+	dex
+	bne LoopGameLine
 
     ldy #0
 Player0Loop:
@@ -117,14 +121,10 @@ Player0Loop:
     bne Player0Loop	
 
     lda #0
-    sta GRP0                 ; disable player 0 graphics
-
-	REPEAT 56
-        sta WSYNC            ;
-    REPEND	
+    sta GRP0                 ; disable player 0 graphics	
 
 ;;
-;; Game end
+;; Playerfield pattern BOTTOM - 24 lines
 ;;
     lda #$F2
     sta COLUPF               ; Set cave bottom color
