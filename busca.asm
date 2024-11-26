@@ -107,48 +107,17 @@ LoopCaveTop:
         sta WSYNC            ;
     REPEND
 
-    lda #%01111110   ;  ######
+    ldy #0
+Player0Loop:
+    lda PlayerBitmap,Y
     sta GRP0
     sta WSYNC
-
-    lda #%11111111   ; ########
-    sta GRP0
-    sta WSYNC
-
-	lda #%10011001   ; #  ##  #
-    sta GRP0
-    sta WSYNC
-
-	lda #%11111111   ; ########
-    sta GRP0
-    sta WSYNC    
-	
-	lda #%11111111   ; ########
-    sta GRP0
-    sta WSYNC    
-	
-	lda #%11111111   ; ########
-    sta GRP0
-    sta WSYNC    
-	
-	lda #%10111101   ; # #### #
-    sta GRP0
-    sta WSYNC    
-	
-	lda #%11000011   ; ##    ##
-    sta GRP0
-    sta WSYNC    
-	
-	lda #%11111111   ; ########
-    sta GRP0
-    sta WSYNC    
-	
-	lda #%01111110   ;  ######
-    sta GRP0
-    sta WSYNC	
+    iny
+    cpy #10
+    bne Player0Loop	
 
     lda #0
-    sta GRP0       ; disable player 0 graphics
+    sta GRP0                 ; disable player 0 graphics
 
 	REPEAT 56
         sta WSYNC            ;
@@ -218,6 +187,18 @@ CaveSprite:
 	.byte #%10000000           ; Line-Col 4-1
 	.byte #%00000100           ; Line-Col 4-2
 	.byte #%00010000           ; Line-Col 4-3
+
+PlayerBitmap:
+    .byte #%01111110           ;  ######
+    .byte #%11111111           ; ########
+    .byte #%10011001           ; #  ##  #
+    .byte #%11111111           ; ########
+    .byte #%11111111           ; ########
+    .byte #%11111111           ; ########
+    .byte #%10111101           ; # #### #
+    .byte #%11000011           ; ##    ##
+    .byte #%11111111           ; ########
+    .byte #%01111110           ;  ######	
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Complete the 4KB ROM size
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
