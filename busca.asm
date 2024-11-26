@@ -62,6 +62,9 @@ StartFrame:
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Draw 192 visible scanlines
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+    lda #$48                 ; player 0 color light red
+    sta COLUP0
+
 	lda #$F8
     sta COLUPF               ; Set cave top color
 
@@ -100,9 +103,56 @@ LoopCaveTop:
 ;; Game init
 ;;
 
-	REPEAT 132
+	REPEAT 66
         sta WSYNC            ;
     REPEND
+
+    lda #%01111110   ;  ######
+    sta GRP0
+    sta WSYNC
+
+    lda #%11111111   ; ########
+    sta GRP0
+    sta WSYNC
+
+	lda #%10011001   ; #  ##  #
+    sta GRP0
+    sta WSYNC
+
+	lda #%11111111   ; ########
+    sta GRP0
+    sta WSYNC    
+	
+	lda #%11111111   ; ########
+    sta GRP0
+    sta WSYNC    
+	
+	lda #%11111111   ; ########
+    sta GRP0
+    sta WSYNC    
+	
+	lda #%10111101   ; # #### #
+    sta GRP0
+    sta WSYNC    
+	
+	lda #%11000011   ; ##    ##
+    sta GRP0
+    sta WSYNC    
+	
+	lda #%11111111   ; ########
+    sta GRP0
+    sta WSYNC    
+	
+	lda #%01111110   ;  ######
+    sta GRP0
+    sta WSYNC	
+
+    lda #0
+    sta GRP0       ; disable player 0 graphics
+
+	REPEAT 56
+        sta WSYNC            ;
+    REPEND	
 
 ;;
 ;; Game end
