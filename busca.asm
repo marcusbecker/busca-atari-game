@@ -19,11 +19,13 @@
 
 P0xpos .byte 	        ; Player 0 X position 1 byte
 P0ypos .byte 	        ; Player 0 Y position 1 byte
+P0yoff .byte 	        ; Player 0 Y offset 1 byte
+P0yPtr .byte 	        ; Player 0 Y pointer 1 byte
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Define constants
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-PLAYER_HEIGHT = 10      ; Default size for player
+PLAYER_HEIGHT = 9       ; Default size for player
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Cartridge ROM from $F000 to $FFFF
@@ -37,8 +39,8 @@ Start:
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Initialize variables
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-lda #10              ; Player 0 Y initial value
-sta P0ypos           ; Set player 0 Y initial value
+	lda #70              ; Player 0 Y initial value (limit 143 to 10)
+	sta P0ypos           ; Set player 0 Y initial value
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Start game logic
@@ -105,29 +107,37 @@ LoopCaveTop:
 ;; Game  - 144 lines
 ;;
 
-	ldx #67
-LoopGameLineTop:
-	sta WSYNC            ;
-	dex
-	bne LoopGameLineTop
+	lda #0
+	sta P0yoff
+	sta P0yPtr
 
-	ldy #0
+	ldx #144
+LoopGameLine:
+	lda P0ypos
+	sec
+	sbc P0yPtr
+	sta P0yoff
+	
+	txa
+	sec
+	sbc P0yoff
+	bne EndGameLine
+
 Player0Loop:
+	ldy P0yPtr
     lda PlayerBitmap,Y
     sta GRP0
-    sta WSYNC
-    iny
-    cpy #10
-    bne Player0Loop	
-
-    lda #0
-    sta GRP0                 ; disable player 0 graphics
 	
-	ldx #67
-LoopGameLineEnd:
+	cpy #PLAYER_HEIGHT
+	beq EndGameLine
+	inc P0yPtr
+
+EndGameLine:
 	sta WSYNC            ;
+    lda #0
+    sta GRP0             ; disable player 0 graphics
 	dex
-	bne LoopGameLineEnd	
+	bne LoopGameLine
 
 ;;
 ;; Playerfield pattern BOTTOM - 24 lines
