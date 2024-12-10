@@ -105,13 +105,13 @@ LoopCaveTop:
 ;; Game  - 144 lines
 ;;
 
-	ldx #134
-LoopGameLine:
+	ldx #67
+LoopGameLineTop:
 	sta WSYNC            ;
 	dex
-	bne LoopGameLine
+	bne LoopGameLineTop
 
-    ldy #0
+	ldy #0
 Player0Loop:
     lda PlayerBitmap,Y
     sta GRP0
@@ -121,7 +121,13 @@ Player0Loop:
     bne Player0Loop	
 
     lda #0
-    sta GRP0                 ; disable player 0 graphics	
+    sta GRP0                 ; disable player 0 graphics
+	
+	ldx #67
+LoopGameLineEnd:
+	sta WSYNC            ;
+	dex
+	bne LoopGameLineEnd	
 
 ;;
 ;; Playerfield pattern BOTTOM - 24 lines
@@ -189,16 +195,16 @@ CaveSprite:
 	.byte #%00010000           ; Line-Col 4-3
 
 PlayerBitmap:
-    .byte #%01111110           ;  ######
-    .byte #%11111111           ; ########
-    .byte #%10011001           ; #  ##  #
-    .byte #%11111111           ; ########
-    .byte #%11111111           ; ########
-    .byte #%11111111           ; ########
-    .byte #%10111101           ; # #### #
-    .byte #%11000011           ; ##    ##
-    .byte #%11111111           ; ########
-    .byte #%01111110           ;  ######	
+    .byte #%11000000           ; ##
+	.byte #%11000000           ; ##
+    .byte #%01100000           ;  ## 
+	.byte #%01100000           ;  ##
+    .byte #%11110000           ; ####
+	.byte #%11110000           ; ####
+    .byte #%01100000           ;  ##
+	.byte #%01100000           ;  ##
+    .byte #%11000000           ; ## 
+	.byte #%11000000           ; ## 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Complete the 4KB ROM size
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
