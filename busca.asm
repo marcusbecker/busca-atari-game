@@ -186,14 +186,25 @@ LoopCaveBottom:
 CheckP0Up:
     lda #%00010000           ; joystick up for player 0
     bit SWCHA
-    bne ExitCheckP0
+    bne CheckP0Down
     lda P0ypos
-    cmp #140                 ; if (player0 Y position > 70)
-    bpl ExitCheckP0          ;    then: skip increment
+    cmp #140                 ; if (player0 Y position > 140)
+    bpl CheckP0Down          ;    then: skip increment
 .P0UpPressed:                ;    else:
     inc P0ypos               ;        increment Y position
 
+CheckP0Down:
+    lda #%00100000           ; joystick down for player 0
+    bit SWCHA
+    bne ExitCheckP0
+    lda P0ypos
+    cmp #15                  ; if (player0 Y position < 15)
+    bmi ExitCheckP0          ;    then: skip decrement
+.P0DownPressed:              ;    else:
+    dec P0ypos               ;        decrement Y position
+
 ExitCheckP0:
+
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
