@@ -187,6 +187,10 @@ CheckP0Up:
     lda #%00010000           ; joystick up for player 0
     bit SWCHA
     bne ExitCheckP0
+    lda P0ypos
+    cmp #140                 ; if (player0 Y position > 70)
+    bpl ExitCheckP0          ;    then: skip increment
+.P0UpPressed:                ;    else:
     inc P0ypos               ;        increment Y position
 
 ExitCheckP0:
