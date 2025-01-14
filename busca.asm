@@ -41,6 +41,8 @@ Start:
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 	lda #70              ; Player 0 Y initial value (limit 143 to 10)
 	sta P0ypos           ; Set player 0 Y initial value
+	lda #60              ; Player 0 X initial value
+	sta P0xpos           ; Set player 0 X initial value
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Start game logic
@@ -60,12 +62,30 @@ StartFrame:
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Vertical Blank Time
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-	REPEAT 37
-		sta WSYNC    ; Let the TIA output the recommended 37 scanlines of VBLANK
+
+;;
+;; Set player position and let the TIA output the recommended 37 scanlines of VBLANK
+;;
+	REPEAT 36
+		sta WSYNC    
 	REPEND
 
+    sta WSYNC                ; start a fresh new scanline
+    lda P0xpos
+    sec                      ; make sure carry-flag is set before subtracion
+.Div15Loop
+    sbc #15                  ; subtract 15 from accumulator
+    bcs .Div15Loop           ; loop until carry-flag is clear
+    eor #7                   ; handle offset range from -8 to 7
+    asl
+    asl
+    asl
+    asl                      ; four shift lefts to get only the top 4 bits
+    sta HMP0                 ; store the fine offset to the correct HMxx
+    sta RESP0                ; fix object position in 15-step increment
+
     lda #0
-	sta VBLANK		 ; Turn off VBLANK
+	sta VBLANK		         ; Turn off VBLANK
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Draw 192 visible scanlines
@@ -196,16 +216,34 @@ CheckP0Up:
 CheckP0Down:
     lda #%00100000           ; joystick down for player 0
     bit SWCHA
-    bne ExitCheckP0
+    bne CheckP0Left
     lda P0ypos
     cmp #15                  ; if (player0 Y position < 15)
-    bmi ExitCheckP0          ;    then: skip decrement
+    bmi CheckP0Left          ;    then: skip decrement
 .P0DownPressed:              ;    else:
     dec P0ypos               ;        decrement Y position
 
+CheckP0Left:
+    lda #%01000000           ; joystick up for player 0
+    bit SWCHA
+    bne CheckP0Right
+    lda P0xpos
+    cmp #140                 ; if (player0 Y position > 140)
+    bpl CheckP0Right         ;    then: skip increment
+.P0LeftPressed:              ;    else:
+    dec P0xpos               ;        increment Y position
+
+CheckP0Right:
+    lda #%10000000           ; joystick up for player 0
+    bit SWCHA
+    bne ExitCheckP0
+    lda P0xpos
+    cmp #140                 ; if (player0 Y position > 140)
+    bpl ExitCheckP0          ;    then: skip increment
+.P0RightPressed:             ;    else:
+    inc P0xpos               ;        increment Y position
+
 ExitCheckP0:
-
-
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Loop to next frame
